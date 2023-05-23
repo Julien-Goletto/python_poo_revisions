@@ -93,23 +93,56 @@ class Moderator(User):
     def edit(self, post, text):
         post.text = text
     def delete(self, thread, post):
-        del thread[thread.posts.index(post)]
+        del thread.posts[thread.posts.index(post)]
 
 
 # Test
 
-jpeg_1 = JPEGImageFile("mon image 1", 80)
+# jpeg_1 = JPEGImageFile("mon image 1", 80)
 
-png_1 = PNGImageFile("mon image 2", 160)
-print(png_1.display())
+# png_1 = PNGImageFile("mon image 2", 160)
+# print(png_1.display())
 
-user = User('Julien', 'monmotdepasse')
-user.register()
-user.login()
-thread = user.create_thread("J'aime les financiers au chocolat", "Aujourd'hui", "Aujourd'hui j'ai mangé un financier au restaurant, c'était délicieux ! Et vous, aimez-vous ces gâteaux ?")
+# user = User('Julien', 'monmotdepasse')
+# user.register()
+# user.login()
+# thread = user.create_thread("J'aime les financiers au chocolat", "Aujourd'hui", "Aujourd'hui j'ai mangé un financier au restaurant, c'était délicieux ! Et vous, aimez-vous ces gâteaux ?")
 
-admin = Moderator('Moderator', 'jesuisadminlol')
-admin.post_message(thread, "C'est un de mes gâteaux préférés, OMG", "Demain", jpeg_1)
-admin.edit(thread.posts[1], "C'est MON gâteau préféré, OMG !!!")
+# admin = Moderator('Moderator', 'jesuisadminlol')
+# admin.post_message(thread, "C'est un de mes gâteaux préférés, OMG", "Demain", jpeg_1)
+# admin.edit(thread.posts[1], "C'est MON gâteau préféré, OMG !!!")
 
-thread.display()
+# thread.display()
+
+# Utilisation chapitre final
+def main():
+  # Créez 1 utilisateur et un modérateur.
+  users = {
+      "user" : User('Julien', 'monmotdepasse'), 
+      "admin" : Moderator('Moderator', 'jesuisadminlol'),
+  }
+
+  # L’utilisateur crée un fil de discussion (vous pouvez inventer les messages).
+  thread = users["user"].create_thread(
+      "J'aime les financiers au chocolat",
+      "Aujourd'hui", "Aujourd'hui j'ai mangé un financier au restaurant, c'était délicieux ! Et vous, aimez-vous ces gâteaux ?"
+  )
+
+  # Le modérateur répond dans ce fil.
+  jpeg_1 = JPEGImageFile("mon image 1", 80)
+  users["admin"].post_message(thread, "C'est un de mes gâteaux préférés, OMG", "Demain", jpeg_1)
+
+  # L’utilisateur répond dans ce même fil par un message hors sujet❗
+  hs_post = users["user"].post_message(thread, "Par contre le céleri je n'y arrive pas, désolé", "Hier")
+
+  # Le modérateur répond que c’est hors sujet, puis supprime le message de l’utilisateur et son dernier message.
+  users["admin"].post_message(thread, "Attention, ici on parle de gâteau, tu es hors sujet et je vais devoir supprimer ce message", "Le surlendemain")
+  users["admin"].delete(thread, hs_post)
+
+  # L’utilisateur répond dans le fil en joignant une image.
+  png_1 = PNGImageFile("mon image 2", 160)
+  users["user"].post_message(thread, "Oui pardon, je me suis trompé de thread, quel distrait je fais !", "L'an dernier")
+
+  thread.display()
+
+main()
