@@ -124,6 +124,3 @@ nail_1 = Nail()
 print(nail_1.__str__())
 my_hammer.hammer_in(nail_1)
 print(nail_1.__str__())
-
-
-
