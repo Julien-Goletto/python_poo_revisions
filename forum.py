@@ -11,6 +11,16 @@ class File(ABC):
 class ImageFile(File):
     pass
 
+class JPEGImageFile(ImageFile):
+    def display(self):
+        super().display()
+        print('Image au format JPEG')
+
+class PNGImageFile(ImageFile):
+    def display(self):
+        super().display()
+        print('Image au format PNG')
+
 # Thread has a title, a creation_date and a post collection
 class Thread:
     def __init__(self, title, creation_date, post):
@@ -36,7 +46,7 @@ class Post:
         self.creation_date = creation_date
     
     def display(self):
-        print(f"Published by{self.author}, the {self.creation_date}")
+        print(f"Published by {self.author}, the {self.creation_date}")
         print(self.text)
 
 # Post with an attached file (image)
@@ -84,3 +94,22 @@ class Moderator(User):
         post.text = text
     def delete(self, thread, post):
         del thread[thread.posts.index(post)]
+
+
+# Test
+
+jpeg_1 = JPEGImageFile("mon image 1", 80)
+
+png_1 = PNGImageFile("mon image 2", 160)
+print(png_1.display())
+
+user = User('Julien', 'monmotdepasse')
+user.register()
+user.login()
+thread = user.create_thread("J'aime les financiers au chocolat", "Aujourd'hui", "Aujourd'hui j'ai mangé un financier au restaurant, c'était délicieux ! Et vous, aimez-vous ces gâteaux ?")
+
+admin = Moderator('Moderator', 'jesuisadminlol')
+admin.post_message(thread, "C'est un de mes gâteaux préférés, OMG", "Demain", jpeg_1)
+admin.edit(thread.posts[1], "C'est MON gâteau préféré, OMG !!!")
+
+thread.display()
