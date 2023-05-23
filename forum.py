@@ -1,4 +1,6 @@
-class File:
+from abc import ABC
+
+class File(ABC):
     def __init__(self, name, size):
         self.name = name
         self.size = size
@@ -40,15 +42,13 @@ class Post:
 # Post with an attached file (image)
 class FilePost(Post):
     def __init__(self, text, author, creation_date, file):
-      self.text = text
-      self.author = author
-      self.creation_date = creation_date
+      super().__init__(text, author, creation_date)
       self.file = file
 
     def display(self):
-        print(f"Published by{self.author}, the {self.creation_date}")
-        print(self.text)
-        self.file.display()  
+        super().display()
+        print("Attached file :")
+        self.file.display()
 
 # User has a name, password. It can register, connect, create_thread, post_message
 class User:
