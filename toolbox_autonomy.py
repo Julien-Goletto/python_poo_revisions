@@ -1,5 +1,6 @@
 class Toolbox:
-    tools = []
+    def __init__(self):
+      self.tools = []
     def add(self, tool):
         self.tools.append(tool)
     def remove(self, tool):
